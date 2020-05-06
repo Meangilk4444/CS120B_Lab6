@@ -197,7 +197,7 @@ int main(void) {
      * s */
 	DDRA = 0x00; PORTA = 0xFF;
 	DDRB = 0xFF; PORTB = 0x00;
-	TimerSet(1000);
+	TimerSet(300);
 	TimerOn();
 
     /* Insert your solution below */
