@@ -56,7 +56,7 @@ void TimerSet(unsigned long M)
 }
 
 
-enum States{START, INIT, PBO, PBT, WAIT1, WAIT2, WAIT3 } state;
+enum States{START, SEQUENCE, WAIT, WAIT2 } state;
 unsigned char button;
 unsigned cnt = 0x00;
 void Tick()
@@ -66,47 +66,25 @@ void Tick()
 	switch(state)
 	{
 		case START:
-			state = INIT;
+			state = SEQUENCE;
 			PORTB = 0x00;
 			break;
 
-		case INIT:
+		case SEQUENCE:
 			if(button)
 			{
-				state = WAIT1;
+				state = WAIT;
 			}
 			else
 			{
-				state = PBO;
+				state = SEQUENCE;
 			}
 			break;
 
-		case PBO:
+		case WAIT:
 			if(button)
 			{
-				state = WAIT1;
-			}
-			else
-			{
-				state = PBT;
-			}
-			break;
-
-		case PBT: 
-			if(button)
-			{
-				state = WAIT1;
-			}
-			else
-			{
-				state = INIT;
-			}
-			break;
-
-		case WAIT1:
-			if(button)
-			{
-				state = WAIT1;
+				state = WAIT;
 			}
 			else
 			{
@@ -114,49 +92,47 @@ void Tick()
 			}
 			break;
 
-
 		case WAIT2:
-			state = WAIT3;
-			break;
-		case WAIT3:
 			if(button)
 			{
-				state = WAIT3;
+				state = START;
 			}
 			else
 			{
-				state = INIT;
+				state = WAIT2;
 			}
+			break;
+
+		default:
+			state = START;
 			break;
 	}
 
 	switch(state)
 	{
 		case START:
+			PORTB = 0x00;
+			cnt = 0x00;
 			break;
 
-		case INIT:
-			PORTB = 0x01;
-			break;
-
-		case PBO:
-			PORTB = 0x02;
-			break;
-
-		case PBT:
-			PORTB = 0x04;
-			break;
-
-		case WAIT2:
-			PORTB = PORTB;
-			break;
-
-		case WAIT3:
-			if(button)
+		case SEQUENCE:
+			if(cnt == 0)
 			{
-				PORTB = PORTB;
+				PORTB = 0x01;
+				cnt++;
 			}
-			break;
+			else if(cnt == 1)
+			{
+				PORTB = 0x02;
+				cnt++;
+			}
+			else if(cnt == 2)
+			{
+				PORTB = 0x04;
+				cnt = 0x00;
+			}
+			break;	
+
 
 	}
 }
