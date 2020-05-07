@@ -56,12 +56,12 @@ void TimerSet(unsigned long M)
 }
 
 
-enum States{START, INIT, PBO, PBT, WAIT1, WAIT2, WAIT3} state;
+enum States{START, INIT, PBO, PBT, WAIT1, WAIT2, WAIT3 } state;
 unsigned char button;
 unsigned cnt = 0x00;
 void Tick()
 {
-	button = (~PINA & 0x01);
+//	button = (~PINA & 0x01);
 
 	switch(state)
 	{
@@ -73,7 +73,6 @@ void Tick()
 		case INIT:
 			if(button)
 			{
-				cnt++;
 				state = WAIT1;
 			}
 			else
@@ -85,8 +84,7 @@ void Tick()
 		case PBO:
 			if(button)
 			{
-				cnt++;
-				state = WAIT2;
+				state = WAIT1;
 			}
 			else
 			{
@@ -94,14 +92,13 @@ void Tick()
 			}
 			break;
 
-		case PBT:
+		case PBT: 
 			if(button)
 			{
-				cnt++;
-				state = WAIT3;
+				state = WAIT1;
 			}
 			else
-			{	
+			{
 				state = INIT;
 			}
 			break;
@@ -113,61 +110,24 @@ void Tick()
 			}
 			else
 			{
-				if(cnt == 0x01)
-				{
-					state = PBO;
-				}
-				else
-				{
-					cnt = 0x00;
-					state = INIT;
-				}
-			}
-			break;
-
-		case WAIT2:
-
-			if(button)
-			{
 				state = WAIT2;
 			}
-			else
-			{	if(cnt == 0x01)
-				{
-					state = PBT;
-				}
-				else
-				{
-					cnt = 0x00;
-					state = INIT;
-				}
-			}
-
 			break;
 
-		case WAIT3:
 
+		case WAIT2:
+			state = WAIT3;
+			break;
+		case WAIT3:
 			if(button)
 			{
 				state = WAIT3;
 			}
 			else
 			{
-				if(cnt == 0x01)
-				{
-					state = INIT;
-				}
-				else
-				{
-					cnt = 0x00;
-					state = INIT;
-				}
-
+				state = INIT;
 			}
 			break;
-
-
-
 	}
 
 	switch(state)
@@ -187,6 +147,17 @@ void Tick()
 			PORTB = 0x04;
 			break;
 
+		case WAIT2:
+			PORTB = PORTB;
+			break;
+
+		case WAIT3:
+			if(button)
+			{
+				PORTB = PORTB;
+			}
+			break;
+
 	}
 }
 
@@ -202,6 +173,7 @@ int main(void) {
 
     /* Insert your solution below */
     while (1) {
+	    button = ~PINA & 0x01;
 		Tick();
 		while(!TimerFlag);
 		TimerFlag = 0;
