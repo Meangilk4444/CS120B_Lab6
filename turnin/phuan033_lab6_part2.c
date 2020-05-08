@@ -113,7 +113,7 @@ void Tick()
 			}
 			else
 			{
-				state = START;
+				state = SEQUENCE;
 			}
 			break;
 
