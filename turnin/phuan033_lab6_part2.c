@@ -107,14 +107,7 @@ void Tick()
 			break;
 
 		case WAIT2:
-			if(button)
-			{
-				state = WAITING_STATE;
-			}
-			else
-			{
-				state = SEQUENCE;
-			}
+			state = START;
 			break;
 
 		default:
@@ -145,13 +138,18 @@ void Tick()
 				PORTB = 0x04;
 				
 			}
+			else if(cnt >= 9 && cnt <= 11)
+			{
+				PORTB = 0x02;
+			}
 
 			cnt++;
 
-			if(cnt == 9)
+			if(cnt == 12)
 			{
 				cnt = 0x00;
 			}
+			
 			break;	
 
 		case WAITING_STATE:
