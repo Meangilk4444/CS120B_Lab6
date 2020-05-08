@@ -135,12 +135,12 @@ void Tick()
 				PORTB = 0x01;
 			//	cnt++;
 			}
-			else if(cnt >= 3 && cnt < 6)
+			else if(cnt >= 3 && cnt <= 6)
 			{
 				PORTB = 0x02;
 			//	cnt++;
 			}
-			else if(cnt >= 7 && cnt < 10)
+			else if(cnt >= 7 && cnt <= 10)
 			{
 				PORTB = 0x04;
 				
