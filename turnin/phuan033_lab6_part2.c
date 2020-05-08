@@ -120,7 +120,14 @@ void Tick()
 			break;
 
 		case WAIT2:
-			state = START;
+			if(button)
+			{
+				state = START;
+			}
+			else
+			{
+				state = WAIT2;
+			}
 			break;
 
 		default:
