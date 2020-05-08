@@ -56,7 +56,7 @@ void TimerSet(unsigned long M)
 }
 
 
-enum States{START, SEQUENCE, WAIT, WAIT2 } state;
+enum States{START, SEQUENCE, WAIT, WAITING_STATE, WAIT2 } state;
 unsigned char button;
 unsigned cnt = 0x00;
 unsigned light = 0x00;
@@ -90,18 +90,30 @@ void Tick()
 			}
 			else
 			{
+				state = WAITING_STATE;
+			}
+			break;
+
+		case WAITING_STATE:
+			if(button)
+			{
 				state = WAIT2;
 			}
+			else
+			{
+				state = WAITING_STATE;
+			}
+
 			break;
 
 		case WAIT2:
 			if(button)
 			{
-				state = START;
+				state = WAITING_STATE;
 			}
 			else
 			{
-				state = WAIT2;
+				state = START;
 			}
 			break;
 
@@ -140,6 +152,10 @@ void Tick()
 			}
 			cnt++;
 			break;	
+
+		case WAITING_STATE:
+			cnt = 0x00;
+			break;
 
 
 	}
