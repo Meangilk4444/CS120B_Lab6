@@ -59,6 +59,7 @@ void TimerSet(unsigned long M)
 enum States{START, SEQUENCE, WAIT, WAIT2 } state;
 unsigned char button;
 unsigned cnt = 0x00;
+unsigned light = 0x00;
 void Tick()
 {
 //	button = (~PINA & 0x01);
@@ -68,6 +69,7 @@ void Tick()
 		case START:
 			state = SEQUENCE;
 			PORTB = 0x00;
+			cnt = 0x00;
 			break;
 
 		case SEQUENCE:
@@ -116,21 +118,27 @@ void Tick()
 			break;
 
 		case SEQUENCE:
-			if(cnt == 0)
+			if(cnt >= 0 && cnt < 3)
 			{
 				PORTB = 0x01;
-				cnt++;
+			//	cnt++;
 			}
-			else if(cnt == 1)
+			else if(cnt >= 3 && cnt < 6)
 			{
 				PORTB = 0x02;
-				cnt++;
+			//	cnt++;
 			}
-			else if(cnt == 2)
+			else if(cnt >= 7 && cnt < 10)
 			{
 				PORTB = 0x04;
+				
+			}
+			else if(cnt == 10)
+
+			{
 				cnt = 0x00;
 			}
+			cnt++;
 			break;	
 
 
@@ -144,7 +152,7 @@ int main(void) {
      * s */
 	DDRA = 0x00; PORTA = 0xFF;
 	DDRB = 0xFF; PORTB = 0x00;
-	TimerSet(300);
+	TimerSet(100);
 	TimerOn();
 
     /* Insert your solution below */
