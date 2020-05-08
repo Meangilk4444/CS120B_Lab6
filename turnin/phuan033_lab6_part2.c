@@ -130,17 +130,17 @@ void Tick()
 			break;
 
 		case SEQUENCE:
-			if(cnt >= 0 && cnt <= 3)
+			if(cnt >= 0 && cnt < 3)
 			{
 				PORTB = 0x01;
 			//	cnt++;
 			}
-			else if(cnt >= 4 && cnt <= 7)
+			else if(cnt >= 3 && cnt <= 5)
 			{
 				PORTB = 0x02;
 			//	cnt++;
 			}
-			else if(cnt >= 8 && cnt <= 11)
+			else if(cnt >= 6 && cnt <= 8)
 			{
 				PORTB = 0x04;
 				
@@ -148,7 +148,7 @@ void Tick()
 
 			cnt++;
 
-			if(cnt == 11)
+			if(cnt == 9)
 			{
 				cnt = 0x00;
 			}
