@@ -68,8 +68,8 @@ void Tick()
 	{
 		case START:
 			state = SEQUENCE;
-			PORTB = 0x00;
-			cnt = 0x00;
+		//	PORTB = 0x00;
+		//	cnt = 0x00;
 			break;
 
 		case SEQUENCE:
@@ -145,12 +145,13 @@ void Tick()
 				PORTB = 0x04;
 				
 			}
-			else if(cnt == 10)
 
+			cnt++;
+
+			if(cnt == 10)
 			{
 				cnt = 0x00;
 			}
-			cnt++;
 			break;	
 
 		case WAITING_STATE:
