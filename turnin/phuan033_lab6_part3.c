@@ -157,7 +157,7 @@ void Tick()
 			break;
 
 		case DE:
-			if(PORTC > 0)
+			if(PORTB > 0)
 			{
 				PORTB =PORTB - 1;
 			}
