@@ -150,16 +150,16 @@ void Tick()
 			break;
 
 		case IN:
-			if(PORTC < 9)
+			if(PORTB < 9)
 			{
-				PORTC = PORTC + 1;
+				PORTB = PORTB + 1;
 			}
 			break;
 
 		case DE:
 			if(PORTC > 0)
 			{
-				PORTC =PORTC - 1;
+				PORTB =PORTB - 1;
 			}
 			break;
 
